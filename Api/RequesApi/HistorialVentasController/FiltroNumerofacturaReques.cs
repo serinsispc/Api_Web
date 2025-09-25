@@ -1,8 +1,8 @@
-﻿namespace Api.RequesApi
+﻿namespace Api.RequesApi.HistorialVentasReques
 {
     public class FiltroNumerofacturaReques
     {
-        public string NombreDB {  get; set; }
+        public string nombreDB {  get; set; }
         public int NumeroFactura { get; set; }
     }
 }

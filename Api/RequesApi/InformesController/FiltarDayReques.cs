@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DAL.ModelControl.DBCliente
+﻿namespace Api.RequesApi.InformesController
 {
-    public class FiltroInformes
+    public class FiltarDayReques
     {
+        public string nombreDB {  get; set; }
         public int yearFiltro { get; set; }
         public int monthFiltro { get; set; }
         public int day1Filtro { get; set; }

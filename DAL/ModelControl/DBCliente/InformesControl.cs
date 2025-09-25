@@ -11,11 +11,11 @@ namespace DAL.ModelControl.DBCliente
 {
     public class InformesControl
     {
-        public static async Task<Informes> Filtrar_DAY(FiltroInformes filtros)
+        public static async Task<Informes> Filtrar_DAY(int year,int month, int day1, int day2)
         {
             try
             {
-                string query = $"EXEC Informe_day {filtros.yearFiltro},{filtros.monthFiltro},{filtros.day1Filtro},{filtros.day2Filtro}";
+                string query = $"EXEC Informe_day {year},{month},{day1},{day2}";
                 var db = new ConnectionSQL();
                 var resp = db.EjecutarConsulta(query,true);
                 var informe = JsonSerializer.Deserialize<Informes>(resp.ToString());

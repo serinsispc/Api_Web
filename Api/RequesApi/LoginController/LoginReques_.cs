@@ -1,6 +1,6 @@
-﻿namespace Api.ControllersModels
+﻿namespace Api.RequesApi.LoginController
 {
-    public class UsuarioLogin
+    public class LoginReques_
     {
         public int? idUsuario { get; set; }
         public Guid? guidUsuario { get; set; }

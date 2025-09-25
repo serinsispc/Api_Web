@@ -1,5 +1,6 @@
 ﻿using Api.Class;
 using Api.ControllersModels;
+using Api.RequesApi.UsuariosAdminController;
 using DAL.ModelControl;
 using DAL.ModelControl.Admin;
 using DAL.Models.Admin;
@@ -15,45 +16,30 @@ namespace Api.Controllers
     public class UsuariosAdminController : ControllerBase
     {
         [HttpPost("ConsultarUsuario")]
-        public async Task<IActionResult> ConsultarUsuario(UsuarioAdmin_cm usuario)
+        [TokenAndDb]
+        public async Task<IActionResult> ConsultarUsuario(ConsultarUsuarioReques reques)
         {
-            // Obtener el token desde el encabezado Authorization
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (string.IsNullOrEmpty(token))
+            // Consultar usuario en la base de datos
+            UsuarioAdmin Usuario_ = UsuarioAdminControl.ConsultarUsuario(reques.Usuario, reques.Clave);
+            if (Usuario_ != null)
             {
-                token = Request.Query["token"].ToString();
-            }
+                UsuarioLogueadoAdmin ul = new UsuarioLogueadoAdmin();
+                ul.usuarioAdmin = Usuario_;
 
-            if (await ClassToken.VereficarToken(token))
-            {
-                ClassDBCliente.baseCliente = "DBAdminSerinsisPC";
-                // Consultar usuario en la base de datos
-                UsuarioAdmin Usuario_ = UsuarioAdminControl.ConsultarUsuario(usuario.Usuario, usuario.Clave);
-                if (Usuario_!=null)
+                /*en esta parte consultamos las bases de datos acignadas*/
+                List<V_UsuarioDB> usuarioDB = new List<V_UsuarioDB>();
+                usuarioDB = V_UsuarioDBControl.ListaDB(Convert.ToInt32(Usuario_.idUsuario), Convert.ToInt32(reques.idTipoSistema));
+                if (usuarioDB.Count > 0)
                 {
-                    UsuarioLogueadoAdmin ul=new UsuarioLogueadoAdmin();
-                    ul.usuarioAdmin = Usuario_;
-                    
-                    /*en esta parte consultamos las bases de datos acignadas*/
-                    List<V_UsuarioDB> usuarioDB = new List<V_UsuarioDB>();
-                    usuarioDB = V_UsuarioDBControl.ListaDB(Convert.ToInt32(Usuario_.idUsuario), Convert.ToInt32(usuario.idTipoSistema));
-                    if (usuarioDB.Count > 0)
-                    {
-                        ul.v_UsuarioDB = usuarioDB;
-                    }
-                    var result = ul;
-                    return Ok(result); // Retorna JSON 200 OK
+                    ul.v_UsuarioDB = usuarioDB;
                 }
-                else
-                {
-                    var error = new { mensaje = "¡El usuario o clave incorrecto!" };
-                    return BadRequest(error); // Retorna JSON 400 Bad Request
-                }
+                var result = ul;
+                return Ok(result); // Retorna JSON 200 OK
             }
             else
             {
-                var error = new { mensaje = "¡El token no es válido!" };
-                return Unauthorized(error); // Retorna JSON 401 Unauthorized
+                var error = new { mensaje = "¡El usuario o clave incorrecto!" };
+                return BadRequest(error); // Retorna JSON 400 Bad Request
             }
         }
 

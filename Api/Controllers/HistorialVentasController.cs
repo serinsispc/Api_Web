@@ -1,11 +1,12 @@
 ﻿using Api.Class;
 using Api.ControllersModels;
-using Api.RequesApi;
+using Api.RequesApi.HistorialVentasReques;
 using DAL;
 using DAL.ModelControl;
 using DAL.ModelControl.DBCliente;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Api.Controllers
 {
@@ -14,142 +15,64 @@ namespace Api.Controllers
     public class HistorialVentasController : ControllerBase
     {
         [HttpPost("FiltroDia")]
-        public async Task<IActionResult> FiltroDia(FiltroDiaReques filtroDia)
+        [TokenAndDb]
+        public async Task<IActionResult> FiltroDia(FiltroDiaReques reques)
         {
-            // Obtener el token desde el encabezado Authorization
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (string.IsNullOrEmpty(token))
-            {
-                token = Request.Query["token"].ToString();
-            }
-            if (await ClassToken.VereficarToken(token))
-            {
-                ClassDBCliente.baseCliente = filtroDia.basedb;
-                var reqDia = InformeFechasRequest.Dia(filtroDia.tabla, filtroDia.columna, filtroDia.fecha);
-                string sqlDia = reqDia.ToSqlExec();
-                var db = new ConnectionSQL();
-                var ressultado =await db.EjecutarConsulta(sqlDia,true);
-                return Ok(ressultado);
-            }
-            else
-            {
-                var error = new { mensaje = "¡El token no es válido!" };
-                return Unauthorized(error); // Retorna JSON 401 Unauthorized
-            }
+            var reqDia = InformeFechasRequest.Dia(reques.tabla, reques.columna, reques.fecha);
+            string sqlDia = reqDia.ToSqlExec();
+            var db = new ConnectionSQL();
+            var ressultado = await db.EjecutarConsulta(sqlDia, true);
+            return Ok(ressultado);
         }
         [HttpPost("FiltroDias")]
-        public async Task<IActionResult> FiltroDias(FiltroDiasReques filtroDias)
+        [TokenAndDb]
+        public async Task<IActionResult> FiltroDias(FiltroDiasReques reques)
         {
-            // Obtener el token desde el encabezado Authorization
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (string.IsNullOrEmpty(token))
-            {
-                token = Request.Query["token"].ToString();
-            }
-            if (await ClassToken.VereficarToken(token))
-            {
-                ClassDBCliente.baseCliente = filtroDias.basedb;
-                var reqDia = InformeFechasRequest.RangoDias(filtroDias.tabla, filtroDias.columna, filtroDias.fecha1,filtroDias.fecha2);
-                string sqlDia = reqDia.ToSqlExec();
-                var db = new ConnectionSQL();
-                var ressultado = await db.EjecutarConsulta(sqlDia, true);
-                return Ok(ressultado);
-            }
-            else
-            {
-                var error = new { mensaje = "¡El token no es válido!" };
-                return Unauthorized(error); // Retorna JSON 401 Unauthorized
-            }
+            var reqDia = InformeFechasRequest.RangoDias(reques.tabla, reques.columna, reques.fecha1, reques.fecha2);
+            string sqlDia = reqDia.ToSqlExec();
+            var db = new ConnectionSQL();
+            var ressultado = await db.EjecutarConsulta(sqlDia, true);
+            return Ok(ressultado);
         }
         [HttpPost("FiltroMes")]
-        public async Task<IActionResult> FiltroMes(FiltroMesReques filtromes)
+        [TokenAndDb]
+        public async Task<IActionResult> FiltroMes(FiltroMesReques reques)
         {
-            // Obtener el token desde el encabezado Authorization
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (string.IsNullOrEmpty(token))
-            {
-                token = Request.Query["token"].ToString();
-            }
-            if (await ClassToken.VereficarToken(token))
-            {
-                ClassDBCliente.baseCliente = filtromes.basedb;
-                var reqDia = InformeFechasRequest.Mes_(filtromes.tabla, filtromes.columna, filtromes.anio,filtromes.mes);
-                string sqlDia = reqDia.ToSqlExec();
-                var db = new ConnectionSQL();
-                var ressultado = await db.EjecutarConsulta(sqlDia, true);
-                return Ok(ressultado);
-            }
-            else
-            {
-                var error = new { mensaje = "¡El token no es válido!" };
-                return Unauthorized(error); // Retorna JSON 401 Unauthorized
-            }
+            var reqDia = InformeFechasRequest.Mes_(reques.tabla, reques.columna, reques.anio, reques.mes);
+            string sqlDia = reqDia.ToSqlExec();
+            var db = new ConnectionSQL();
+            var ressultado = await db.EjecutarConsulta(sqlDia, true);
+            return Ok(ressultado);
         }
         [HttpPost("FiltroMeses")]
-        public async Task<IActionResult> FiltroMeses(FiltroMesesReques filtromeses)
+        [TokenAndDb]
+        public async Task<IActionResult> FiltroMeses(FiltroMesesReques reques)
         {
-            // Obtener el token desde el encabezado Authorization
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (string.IsNullOrEmpty(token))
-            {
-                token = Request.Query["token"].ToString();
-            }
-            if (await ClassToken.VereficarToken(token))
-            {
-                ClassDBCliente.baseCliente = filtromeses.basedb;
-                var reqDia = InformeFechasRequest.Meses_(filtromeses.tabla, filtromeses.columna, filtromeses.meses, filtromeses.anio);
-                string sqlDia = reqDia.ToSqlExec();
-                var db = new ConnectionSQL();
-                var ressultado = await db.EjecutarConsulta(sqlDia, true);
-                return Ok(ressultado);
-            }
-            else
-            {
-                var error = new { mensaje = "¡El token no es válido!" };
-                return Unauthorized(error); // Retorna JSON 401 Unauthorized
-            }
+            var reqDia = InformeFechasRequest.Meses_(reques.tabla, reques.columna, reques.meses, reques.anio);
+            string sqlDia = reqDia.ToSqlExec();
+            var db = new ConnectionSQL();
+            var ressultado = await db.EjecutarConsulta(sqlDia, true);
+            return Ok(ressultado);
         }
         [HttpPost("FiltroNumeroFactura")]
-        public async Task<IActionResult> FiltroNumeroFactura(FiltroNumerofacturaReques filtro)
+        [TokenAndDb]
+        public async Task<IActionResult> FiltroNumeroFactura(FiltroNumerofacturaReques reques)
         {
-            // Obtener el token desde el encabezado Authorization
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (string.IsNullOrEmpty(token))
-            {
-                token = Request.Query["token"].ToString();
-            }
-            if (await ClassToken.VereficarToken(token))
-            {
-                ClassDBCliente.baseCliente = filtro.NombreDB;
-                var ressultado = V_TablaVentasControl.ConsultarNumeroFactura(filtro.NumeroFactura);
-                return Ok(ressultado);
-            }
-            else
-            {
-                var error = new { mensaje = "¡El token no es válido!" };
-                return Unauthorized(error); // Retorna JSON 401 Unauthorized
-            }
+            var ressultado = V_TablaVentasControl.ConsultarNumeroFactura(reques.NumeroFactura);
+            return Ok(ressultado);
         }
         [HttpPost("FiltroNombreCliente")]
-        public async Task<IActionResult> FiltroNombreCliente(FiltroNombreClienteReques filtro)
+        [TokenAndDb]
+        public async Task<IActionResult> FiltroNombreCliente(FiltroNombreClienteReques reques)
         {
-            // Obtener el token desde el encabezado Authorization
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (string.IsNullOrEmpty(token))
-            {
-                token = Request.Query["token"].ToString();
-            }
-            if (await ClassToken.VereficarToken(token))
-            {
-                ClassDBCliente.baseCliente = filtro.NombreDB;
-                var ressultado = V_TablaVentasControl.ConsultarNombreCliente(filtro.NombreCliente);
-                return Ok(ressultado);
-            }
-            else
-            {
-                var error = new { mensaje = "¡El token no es válido!" };
-                return Unauthorized(error); // Retorna JSON 401 Unauthorized
-            }
+            var ressultado = V_TablaVentasControl.ConsultarNombreCliente(reques.NombreCliente);
+            return Ok(ressultado);
+        }
+        [HttpPost("ListaResoluciones")]
+        [TokenAndDb]
+        public async Task<IActionResult> ListaResoluciones(ListaResolucionesReques reques)
+        {
+            return Ok(V_ResolucionesControl.Lista());
         }
     }
 }

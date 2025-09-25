@@ -9,7 +9,6 @@ namespace DAL.ModelControl.DBCliente
 {
     public class Informes
     {
-        public static FiltroInformes FiltroInformes { get; set; }
         public static V_TurnosCaja V_TurnosCaja { get; set; }
     }
 }

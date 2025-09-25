@@ -1,5 +1,5 @@
 ﻿using Api.Class;
-using Api.ControllersModels;
+using Api.RequesApi.SedeController;
 using DAL.ModelControl;
 using DAL.ModelControl.DBCliente;
 using DAL.Models.DBCliente;
@@ -14,28 +14,13 @@ namespace Api.Controllers
     public class SedeController : ControllerBase
     {
         [HttpPost("ConsultarSede")]
-        public async Task<ActionResult> ConsultarSede(EnviarDBCliente consultar)
+        [TokenAndDb]
+        public async Task<ActionResult> ConsultarSede(ConsultarSedeReques reques)
         {
-            // Obtener el token desde el encabezado Authorization
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (string.IsNullOrEmpty(token))
-            {
-                token = Request.Query["token"].ToString();
-            }
-            if(await ClassToken.VereficarToken(token))
-            {
-                /*cargamos el nombre de la base*/
-                ClassDBCliente.baseCliente = consultar.dbCliente;
-                Sede sede = new Sede();
-                sede = await SedeControl.sede();
-                string resp=JsonSerializer.Serialize(sede);
-                return Ok(resp);
-            }
-            else
-            {
-                var error = new { mensaje = "¡El token no es válido!" };
-                return Unauthorized(error); // Retorna JSON 401 Unauthorized
-            }
+            Sede sede = new Sede();
+            sede = await SedeControl.sede();
+            string resp = JsonSerializer.Serialize(sede);
+            return Ok(resp);
         }
     }
 }
