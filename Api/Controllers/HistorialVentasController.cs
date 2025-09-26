@@ -1,5 +1,6 @@
 ﻿using Api.Class;
 using Api.ControllersModels;
+using Api.RequesApi.HistorialVentasController;
 using Api.RequesApi.HistorialVentasReques;
 using DAL;
 using DAL.ModelControl;
@@ -73,6 +74,22 @@ namespace Api.Controllers
         public async Task<IActionResult> ListaResoluciones(ListaResolucionesReques reques)
         {
             return Ok(V_ResolucionesControl.Lista());
+        }
+        [HttpPost("ConsultarResolucionIdResolucion")]
+        [TokenAndDb]
+        public async Task<IActionResult> ConsultarResolucionIdResolucion(ConsultarResolucionIdResolucionReques reques)
+        {
+            var resolucion =await ResolucionControl.ConsultarIdResolucion(reques.IdResolucion);
+            return Ok(resolucion);
+        }
+        [HttpPost("EditarIdResolucion")]
+        [TokenAndDb]
+        public async Task<IActionResult> EditarIdResolucion(EditarIdResolucionReques reques)
+        {
+            var venta =await TablaVentasControl.ConsultarId(reques.idventa);
+            venta.idResolucion= reques.idresolucion;
+            var respuesta=TablaVentasControl
+            return Ok(respuesta);
         }
     }
 }
