@@ -14,7 +14,12 @@ namespace DAL.ModelControl.DBCliente
         {
             try
             {
-                
+                string json=JsonConvert.SerializeObject(tventa);
+                json = AjustarJSON.Ajustar(json);
+                var cn = new ConnectionSQL();
+                var query = $"EXEC CRUD_TablaVentas N'{json}',{funcion}";
+                var respuesta = await cn.EjecutarConsulta(query);
+                return JsonConvert.DeserializeObject<RespuestaCRUD>(respuesta);
             }
             catch(Exception ex)
             {

@@ -88,7 +88,7 @@ namespace Api.Controllers
         {
             var venta =await TablaVentasControl.ConsultarId(reques.idventa);
             venta.idResolucion= reques.idresolucion;
-            var respuesta=TablaVentasControl
+            var respuesta =await TablaVentasControl.CRUD(venta,1);
             return Ok(respuesta);
         }
     }
