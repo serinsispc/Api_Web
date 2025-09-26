@@ -10,7 +10,7 @@ namespace Api.Controllers
     [ApiController]
     public class V_ClientesController : ControllerBase
     {
-        [HttpGet("Lista")]
+        [HttpPost("Lista")]
         [TokenAndDb]
         public async Task<IActionResult> Lista(DBReques reques)
         {

@@ -5,6 +5,7 @@ using Api.RequesApi.HistorialVentasReques;
 using DAL;
 using DAL.ModelControl;
 using DAL.ModelControl.DBCliente;
+using DAL.Models.DBCliente;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -89,6 +90,29 @@ namespace Api.Controllers
             var venta =await TablaVentasControl.ConsultarId(reques.idventa);
             venta.idResolucion= reques.idresolucion;
             var respuesta =await TablaVentasControl.CRUD(venta,1);
+            return Ok(respuesta);
+        }
+        [HttpPost("AsociarClienteAVenta")]
+        [TokenAndDb]
+        public async Task<IActionResult> AsociarClienteAVenta(AsociarClienteAVentaRequest request)
+        {
+            int funcion = 0;
+            //lo primero es consultar la relacion con el id de la venta.
+            var relacion =await R_VentaClienteControl.ConsultarIdVenta(request.idVenta);
+            if (relacion != null)
+            {
+                relacion.idCliente = request.idCliente;
+                funcion = 1;
+            }
+            else
+            {
+                relacion = new R_VentaCliente();
+                relacion.id = 0;
+                relacion.idVenta = request.idVenta;
+                relacion.idCliente=request.idCliente;
+            }
+            var respuesta =await R_VentaClienteControl.CRUD(relacion,funcion);
+
             return Ok(respuesta);
         }
     }
