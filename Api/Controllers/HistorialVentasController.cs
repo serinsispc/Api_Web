@@ -111,6 +111,7 @@ namespace Api.Controllers
                 relacion.idVenta = request.idVenta;
                 relacion.idCliente=request.idCliente;
             }
+            //respuesta
             var respuesta =await R_VentaClienteControl.CRUD(relacion,funcion);
 
             return Ok(respuesta);
