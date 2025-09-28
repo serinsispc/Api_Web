@@ -48,5 +48,24 @@ namespace DAL.ModelControl.DBCliente
                 return new List<V_TablaVentas>();
             }
         }
+        public static V_TablaVentas ConsultarID(int idventa)
+        {
+            try
+            {
+                var ventas = new V_TablaVentas();
+                ventas = Task.Run(async () => {
+                    string query = $"select *from V_TablaVentas where id={idventa}";
+                    var cn = new ConnectionSQL();
+                    string resp = await cn.EjecutarConsulta(query);
+                    return JsonConvert.DeserializeObject<V_TablaVentas>(resp);
+                }).Result;
+                return ventas;
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                return new V_TablaVentas();
+            }
+        }
     }
 }
