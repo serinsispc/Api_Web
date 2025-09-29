@@ -11,16 +11,16 @@ namespace DAL.Models.DBCliente
         /// <summary>
         /// Identificador único del registro
         /// </summary>
-        public int Id { get; set; }
+        public int id { get; set; }
 
         /// <summary>
         /// Identificador de la venta asociada
         /// </summary>
-        public int IdVenta { get; set; }
+        public int idventa { get; set; }
 
         /// <summary>
         /// JSON completo de la factura electrónica
         /// </summary>
-        public string FacturaJSON { get; set; }
+        public string facturaJSON { get; set; }
     }
 }

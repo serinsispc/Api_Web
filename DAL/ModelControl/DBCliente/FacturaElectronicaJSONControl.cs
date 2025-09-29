@@ -18,7 +18,7 @@ namespace DAL.ModelControl.DBCliente
                 string json=JsonConvert.SerializeObject(factura);
                 json = AjustarJSON.Ajustar(json);
                 var cn = new ConnectionSQL();
-                var query = $"EXEC dbo.INSERTINTO_FacturaElectronicaJSON N'{json}'";
+                var query = $"EXEC dbo.INSERTINTO_FacturaElectronica_JSON N'{json}'";
                 var resp = await cn.EjecutarConsulta(query);
                 return JsonConvert.DeserializeObject<RespuestaCRUD>(resp);
             }
