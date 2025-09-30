@@ -6,6 +6,6 @@ namespace Api.RequesApi.FacturaElectronicaController
     {
         public string nombreDB {  get; set; }
         public int Funcion {  get; set; }
-        public FacturaElectronica FacturaElectronica { get; set; }
+        public FacturaElectronica facturaElectronica { get; set; }
     }
 }

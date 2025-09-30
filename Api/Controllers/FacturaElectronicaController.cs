@@ -25,8 +25,15 @@ namespace Api.Controllers
         [TokenAndDb]
         public async Task<IActionResult> CRUD_FacturaElectronica(CRUD_FacturaElectronicaRequest reques)
         {
-            var resp =await FacturaElectronicaControl.CRUD(reques.FacturaElectronica,reques.Funcion);
+            var resp =await FacturaElectronicaControl.CRUD(reques.facturaElectronica,reques.Funcion);
             return Ok(resp);
+        }
+        [HttpPost("ConsultarIdVenta")]
+        [TokenAndDb]
+        public async Task<IActionResult> ConsultarIdVenta(ConsultarIdVentaRequest reques)
+        {
+            var fe = FacturaElectronicaControl.ConsultarConsecutivo(reques.idventa);
+            return Ok();
         }
     }
 }
