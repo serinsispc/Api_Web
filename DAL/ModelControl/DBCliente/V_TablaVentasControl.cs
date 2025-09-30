@@ -67,5 +67,27 @@ namespace DAL.ModelControl.DBCliente
                 return new V_TablaVentas();
             }
         }
+
+        public static List<ExportarExcel> FiltrarExportarExcel(DateTime fecha1,DateTime fecha2 )
+        {
+            try
+            {
+                bool sonIguales = fecha1.Date == fecha2.Date;
+                if (sonIguales) fecha2= fecha2.AddDays(1).Date;
+                var ventas = new List<ExportarExcel>();
+                ventas = Task.Run(async () => {
+                    string query = $"EXEC ExportarExcel '{fecha1.ToShortDateString()}','{fecha2.ToShortDateString()}'";
+                    var cn = new ConnectionSQL();
+                    string resp = await cn.EjecutarConsulta(query,true);
+                    return JsonConvert.DeserializeObject<List<ExportarExcel>>(resp);
+                }).Result;
+                return ventas;
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                return new List<ExportarExcel>();
+            }
+        }
     }
 }

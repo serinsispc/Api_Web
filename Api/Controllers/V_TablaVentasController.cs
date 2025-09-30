@@ -16,5 +16,13 @@ namespace Api.Controllers
             var venta = V_TablaVentasControl.ConsultarID(reques.idventa);
             return Ok(venta);
         }
+
+        [HttpPost("ExportarExcelFiltro")]
+        [TokenAndDb]
+        public async Task<IActionResult> ExportarExcelFiltro(ExportarExcelFiltroRequest reques)
+        {
+            var ventas =V_TablaVentasControl.FiltrarExportarExcel(reques.fecha1,reques.fecha2);
+            return Ok(ventas);
+        }
     }
 }
