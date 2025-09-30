@@ -37,5 +37,35 @@ namespace Api.Controllers
 
             return Ok(new { mensaje = $"OK, Observacion agregada con exíto." });
         }
+
+        [HttpPut("EditarConsecutivo")]
+        [TokenAndDb]
+        public async Task<IActionResult> EditarConsecutivo(EditarConsecutivoReques reques)
+        {
+            if (reques == null)
+            {
+                return BadRequest(new { mensaje = "Error no detectaron valores request." });
+            }
+
+            var idventa = reques.idventa;
+            var consecutivo = reques.consecutivo;
+
+            var venta = await TablaVentasControl.ConsultarId(idventa);
+            if (venta == null)
+            {
+                return BadRequest(new { mensaje = $"Error, el idventa {idventa} no existe." });
+            }
+
+            venta.numeroVenta = consecutivo;
+
+            var respCRUD = await TablaVentasControl.CRUD(venta, 1);
+            if (!respCRUD.estado)
+            {
+                return BadRequest(new { mensaje = $"Error, no se edito el numero de la factura." });
+            }
+
+            return Ok(new { mensaje = $"OK, Numero de factura editado con exíto." });
+        }
+
     }
 }
