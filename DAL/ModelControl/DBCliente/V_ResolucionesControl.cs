@@ -30,5 +30,20 @@ namespace DAL.ModelControl.DBCliente
                 return new List<V_Resoluciones>();
             }
         }
+        public static async Task<V_Resoluciones> ConsultarIdResolucion(int IdResolucion)
+        {
+            try
+            {
+                var cn=new ConnectionSQL();
+                var query = $"select *from V_Resoluciones where idResolucion={IdResolucion}";
+                var resp = await cn.EjecutarConsulta(query);
+                  
+            }
+            catch(Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return null;
+            }
+        }
     }
 }
