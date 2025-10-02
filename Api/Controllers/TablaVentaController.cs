@@ -1,4 +1,5 @@
 ﻿using Api.RequesApi.TablaVentaController;
+using DAL;
 using DAL.ModelControl.DBCliente;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +67,35 @@ namespace Api.Controllers
 
             return Ok(new { mensaje = $"OK, Numero de factura editado con exíto." });
         }
-
+        [HttpPost("EditarEstadoFactura")]
+        [TokenAndDb]
+        public async Task<IActionResult> EditarEstadoFactura(EditarEstadoFacturaReques reques)
+        {
+            var respuesta = new RespuestaAPI();
+            if (reques != null)
+            {
+                //consultamos el id de la tablaventa
+                var tablaventa =await TablaVentasControl.ConsultarId(reques.idventa);
+                if (tablaventa != null)
+                {
+                    tablaventa.estadoVenta = reques.estado;
+                }
+                //enviamos a guardar
+                var crud =await TablaVentasControl.CRUD(tablaventa,1);
+                if (crud.estado)
+                {
+                    respuesta = new RespuestaAPI() { data = "null", estado = true, mensaje = $"Estado factura editado con éxito." };
+                }
+                else
+                {
+                    respuesta = new RespuestaAPI() { data = "null", estado = false, mensaje = $"No se encontró el id venta # {reques.idventa}." };
+                }
+            }
+            else
+            {
+                respuesta= new RespuestaAPI() { data="null", estado=false, mensaje="No se hallaron los datos del request." };
+            }
+            return Ok(respuesta);
+        }
     }
 }

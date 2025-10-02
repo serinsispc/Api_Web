@@ -12,4 +12,10 @@ namespace DAL
         public string mensaje { get; set; }
         public int idAfectado { get; set; }
     }
+    public class RespuestaAPI
+    {
+        public bool estado { get; set; }
+        public string mensaje { get; set; }
+        public string data { get; set; }
+    }
 }
