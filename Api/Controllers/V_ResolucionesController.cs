@@ -13,8 +13,8 @@ namespace Api.Controllers
         [TokenAndDb]
         public async Task<IActionResult> ConsultarIdResolucion(ConsultarIdResolucionRequest request)
         {
-            var reslolucion=V_ResolucionesControl.
-            return Ok();
+            var reslolucion = V_ResolucionesControl.ConsultarIdResolucion(request.idResolucion);
+            return Ok(reslolucion);
         }
     }
     public class ConsultarIdResolucionRequest

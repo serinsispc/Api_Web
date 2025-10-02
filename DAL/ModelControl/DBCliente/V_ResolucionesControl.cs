@@ -37,7 +37,7 @@ namespace DAL.ModelControl.DBCliente
                 var cn=new ConnectionSQL();
                 var query = $"select *from V_Resoluciones where idResolucion={IdResolucion}";
                 var resp = await cn.EjecutarConsulta(query);
-                  
+                return JsonConvert.DeserializeObject<V_Resoluciones>(resp);
             }
             catch(Exception ex)
             {
