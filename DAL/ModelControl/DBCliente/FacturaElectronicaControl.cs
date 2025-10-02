@@ -42,5 +42,35 @@ namespace DAL.ModelControl.DBCliente
                 return new GetConsecutivoFacturaElectronica { consecutivo=0 };
             }
         }
+        public static async Task<FacturaElectronica> ConsultarIdVenta(int idventa)
+        {
+            try
+            {
+                var cn = new ConnectionSQL();
+                var query = $"select *from FacturaElectronica where idVenta=N'{idventa}'";
+                var resp = await cn.EjecutarConsulta(query);
+                return JsonConvert.DeserializeObject<FacturaElectronica>(resp);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.ToString();
+                return new FacturaElectronica();
+            }
+        }
+        public static async Task<FacturaElectronica> ConsultarCufe(string cufe)
+        {
+            try
+            {
+                var cn = new ConnectionSQL();
+                var query = $"select *from FacturaElectronica where cufe=N'{cufe}'";
+                var resp = await cn.EjecutarConsulta(query);
+                return JsonConvert.DeserializeObject<FacturaElectronica>(resp);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.ToString();
+                return new FacturaElectronica();
+            }
+        }
     }
 }

@@ -28,12 +28,19 @@ namespace Api.Controllers
             var resp =await FacturaElectronicaControl.CRUD(reques.facturaElectronica,reques.Funcion);
             return Ok(resp);
         }
+        [HttpPost("ConsultarCufe")]
+        [TokenAndDb]
+        public async Task<IActionResult> ConsultarCufe(ConsultarCufeRequest reques)
+        {
+            var fe =await FacturaElectronicaControl.ConsultarCufe(reques.cufe.ToString());
+            return Ok(fe);
+        }
         [HttpPost("ConsultarIdVenta")]
         [TokenAndDb]
         public async Task<IActionResult> ConsultarIdVenta(ConsultarIdVentaRequest reques)
         {
-            var fe = FacturaElectronicaControl.ConsultarConsecutivo(reques.idventa);
-            return Ok();
+            var fe = await FacturaElectronicaControl.ConsultarIdVenta(reques.idventa);
+            return Ok(fe);
         }
     }
 }

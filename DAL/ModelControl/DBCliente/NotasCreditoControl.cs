@@ -17,7 +17,7 @@ namespace DAL.ModelControl.DBCliente
                 string json = JsonConvert.SerializeObject(notasCredito);
                 json = AjustarJSON.Ajustar(json);
                 var cn = new ConnectionSQL();
-                var query = $"EXEC CRUD_NotasCreditoJSON N'{json}',{funcion}";
+                var query = $"EXEC CRUD_NotasCreditoJSON {funcion}, N'{json}'";
                 var resp = await cn.EjecutarConsulta(query);
                 return JsonConvert.DeserializeObject<RespuestaCRUD>(resp);
             }
