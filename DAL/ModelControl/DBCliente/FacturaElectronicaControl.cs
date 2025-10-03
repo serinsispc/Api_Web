@@ -47,7 +47,7 @@ namespace DAL.ModelControl.DBCliente
             try
             {
                 var cn = new ConnectionSQL();
-                var query = $"select *from FacturaElectronica where idVenta=N'{idventa}'";
+                var query = $"select *from FacturaElectronica where idVenta={idventa}";
                 var resp = await cn.EjecutarConsulta(query);
                 return JsonConvert.DeserializeObject<FacturaElectronica>(resp);
             }

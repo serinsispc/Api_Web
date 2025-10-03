@@ -5,7 +5,7 @@ namespace Api.RequesApi.FacturaElectronicaJSONController
     public class InsertIntoRequest
     {
         public string nombreDB {  get; set; }
-
+        public int Funcion {  get; set; }
         public FacturaElectronicaJSON FacturaElectronicaJSON { get; set; }
     }
 }

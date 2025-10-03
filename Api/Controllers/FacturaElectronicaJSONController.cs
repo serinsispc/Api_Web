@@ -1,4 +1,5 @@
-﻿using Api.RequesApi.FacturaElectronicaJSONController;
+﻿using Api.RequesApi.FacturaElectronicaController;
+using Api.RequesApi.FacturaElectronicaJSONController;
 using DAL.ModelControl.DBCliente;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +11,20 @@ namespace Api.Controllers
     [ApiController]
     public class FacturaElectronicaJSONController : ControllerBase
     {
-        [HttpPost("InsertInto")]
+        [HttpPost("CRUD")]
         [TokenAndDb]
-        public async Task<IActionResult> InsertInto(InsertIntoRequest reques)
+        public async Task<IActionResult> CRUD(InsertIntoRequest reques)
         {
             var fe = reques.FacturaElectronicaJSON;
-            var respuesta =await FacturaElectronicaJSONControl.InsertInto(fe);
+            var respuesta =await FacturaElectronicaJSONControl.CRUD(fe,reques.Funcion);
+            return Ok(respuesta);
+        }
+
+        [HttpPost("ConsultarIdVenta")]
+        [TokenAndDb]
+        public async Task<IActionResult> ConsultarIdVenta(ConsultarIdVentaRequest request)
+        {
+            var respuesta = await FacturaElectronicaJSONControl.Consultar_IdVenta(request.idventa);
             return Ok(respuesta);
         }
     }
