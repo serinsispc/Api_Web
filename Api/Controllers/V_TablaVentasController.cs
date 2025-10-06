@@ -1,4 +1,6 @@
-﻿using Api.RequesApi.V_TablaVentasController;
+﻿using Api.Class;
+using Api.RequesApi.FacturaElectronicaController;
+using Api.RequesApi.V_TablaVentasController;
 using DAL.ModelControl.DBCliente;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +25,15 @@ namespace Api.Controllers
         {
             var ventas =V_TablaVentasControl.FiltrarExportarExcel(reques.fecha1,reques.fecha2);
             return Ok(ventas);
+        }
+
+        [HttpPost("ConsultarIdVenta")]
+        [TokenAndDb]
+        public async Task<IActionResult> ConsultarIdVenta(ConsultarIdVentaRequest reques)
+        {
+            //select *from V_VentasPagosInternos where id=0
+
+            return Ok();
         }
     }
 }
