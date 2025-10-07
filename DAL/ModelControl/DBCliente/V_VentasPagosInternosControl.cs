@@ -15,8 +15,15 @@ namespace DAL.ModelControl.DBCliente
             {
                 var cn = new ConnectionSQL();
                 var query = $"select *from V_VentasPagosInternos where id={idventa}";
-                var resp = cn.EjecutarConsulta(query,true);
-                var 
+                string resp =await cn.EjecutarConsulta(query,true);
+                if (resp != "[]")
+                {
+                    return new RespuestaAPI { data = resp, estado=true, mensaje="ok" };
+                }
+                else
+                {
+                    return new RespuestaAPI { mensaje="error", estado=false, data="error" };
+                }
             }
             catch(Exception ex)
             {
