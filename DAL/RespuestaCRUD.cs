@@ -16,6 +16,6 @@ namespace DAL
     {
         public bool estado { get; set; }
         public string mensaje { get; set; }
-        public string data { get; set; }
+        public string? data { get; set; }
     }
 }
