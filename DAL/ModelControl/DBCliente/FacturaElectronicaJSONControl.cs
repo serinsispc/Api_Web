@@ -29,7 +29,7 @@ namespace DAL.ModelControl.DBCliente
             }
         }
 
-        public static async Task<RespuestaAPI> Consultar_IdVenta(int idventa)
+        public static async Task<FacturaElectronicaJSON> Consultar_IdVenta(int idventa)
         {
             try
             {
@@ -38,18 +38,18 @@ namespace DAL.ModelControl.DBCliente
                 var resp = await cn.EjecutarConsulta(query);
                 if (resp != "[]")
                 {
-                    return new RespuestaAPI { data=resp, estado=true, mensaje="OK" };
+                    return JsonConvert.DeserializeObject<FacturaElectronicaJSON>(resp);
                 }
                 else
                 {
-                    return new RespuestaAPI { data = null, mensaje = "Error", estado = false };
+                    return null;
                 }
                 
             }
             catch (Exception ex)
             {
                 string msg = ex.Message;
-                return new RespuestaAPI { estado = false, data = null, mensaje = msg };
+                return null;
             }
         }
     }

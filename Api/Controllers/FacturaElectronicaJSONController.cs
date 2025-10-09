@@ -1,6 +1,7 @@
 ﻿using Api.RequesApi.FacturaElectronicaController;
 using Api.RequesApi.FacturaElectronicaJSONController;
 using DAL.ModelControl.DBCliente;
+using DAL.Models.DBCliente;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,20 +12,34 @@ namespace Api.Controllers
     [ApiController]
     public class FacturaElectronicaJSONController : ControllerBase
     {
-        [HttpPost("CRUD")]
+        [HttpPost("")]
         [TokenAndDb]
-        public async Task<IActionResult> CRUD(InsertIntoRequest reques)
+        public async Task<IActionResult> CRUD_(FacturaElectronicaJSON facturaElectronicaJSON)
         {
-            var fe = reques.FacturaElectronicaJSON;
-            var respuesta =await FacturaElectronicaJSONControl.CRUD(fe,reques.Funcion);
+            var respuesta =await FacturaElectronicaJSONControl.CRUD(facturaElectronicaJSON, 0);
+            return Ok(respuesta);
+        }
+        [HttpPut("")]
+        [TokenAndDb]
+        public async Task<IActionResult> CRUD(FacturaElectronicaJSON facturaElectronicaJSON)
+        {
+            var respuesta = await FacturaElectronicaJSONControl.CRUD(facturaElectronicaJSON, 0);
+            return Ok(respuesta);
+        }
+        [HttpDelete("{id}")]
+        [TokenAndDb]
+        public async Task<IActionResult> CRUD(int id)
+        {
+            FacturaElectronicaJSON facturaElectronicaJSON = new FacturaElectronicaJSON();
+            var respuesta = await FacturaElectronicaJSONControl.CRUD(facturaElectronicaJSON, 2);
             return Ok(respuesta);
         }
 
-        [HttpPost("ConsultarIdVenta")]
+        [HttpGet("{idventa}")]
         [TokenAndDb]
-        public async Task<IActionResult> ConsultarIdVenta(ConsultarIdVentaRequest request)
+        public async Task<IActionResult> ConsultarIdVenta(int idventa)
         {
-            var respuesta = await FacturaElectronicaJSONControl.Consultar_IdVenta(request.idventa);
+            var respuesta = await FacturaElectronicaJSONControl.Consultar_IdVenta(idventa);
             return Ok(respuesta);
         }
     }
