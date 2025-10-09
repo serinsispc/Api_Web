@@ -9,9 +9,9 @@ namespace Api.Controllers
     [ApiController]
     public class V_R_MediosDePago_MediosDePagoInternosController : ControllerBase
     {
-        [HttpPost("Lista")]
+        [HttpGet("")]
         [TokenAndDb]
-        public async Task<IActionResult>Lista(DBReques reques)
+        public async Task<IActionResult>Lista()
         {
             var resp = await V_R_MediosDePago_MediosDePagoInternosControl.Lista();
             return Ok(resp);

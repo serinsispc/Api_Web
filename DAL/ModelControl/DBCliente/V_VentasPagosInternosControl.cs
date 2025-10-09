@@ -14,7 +14,7 @@ namespace DAL.ModelControl.DBCliente
             try
             {
                 var cn = new ConnectionSQL();
-                var query = $"select *from V_VentasPagosInternos where id={idventa}";
+                var query = $"select *from V_VentasPagosInternos where idVenta={idventa}";
                 string resp =await cn.EjecutarConsulta(query,true);
                 if (resp != "[]")
                 {

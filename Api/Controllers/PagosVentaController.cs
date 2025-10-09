@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DAL.ModelControl.DBCliente;
+using DAL.Models.DBCliente;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -7,15 +9,20 @@ namespace Api.Controllers
     [ApiController]
     public class PagosVentaController : ControllerBase
     {
-        public class requestpv
-        {
-            public string nombreDB {  get; set; }
-        }
-        [HttpGet("consultar-id")]
+        [HttpGet("{id}")]
         [TokenAndDb]
-        public async Task<IActionResult> consultar_id(requestpv request)
+        public async Task<IActionResult> consultar_id(int id)
         {
-            return Ok();
+            var resp = await PagosVentaControl.consultar_id(id);
+            return Ok(resp);
+        }
+
+        [HttpPut("")]
+        [TokenAndDb]
+        public async Task<IActionResult> crud_pago(PagosVenta pagosVenta)
+        {
+            var resp = await PagosVentaControl.crud(pagosVenta,1);
+            return Ok(resp);
         }
     }
 }

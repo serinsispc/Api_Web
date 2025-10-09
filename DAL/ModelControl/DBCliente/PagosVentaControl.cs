@@ -1,9 +1,11 @@
 ﻿using DAL.Models.DBCliente;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DAL.ModelControl.DBCliente
 {
@@ -29,6 +31,23 @@ namespace DAL.ModelControl.DBCliente
             {
                 string msg = ex.Message;
                 return new RespuestaAPI { data=null, estado=false, mensaje=msg };
+            }
+        }
+        public static async Task<RespuestaCRUD> crud(PagosVenta pagosVenta, int funcion)
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(pagosVenta);
+                json = AjustarJSON.Ajustar(json);
+                var cn = new ConnectionSQL();
+                var query = $"EXEC CRUD_PagosVenta {funcion},N'{json}'";
+                var resp = await cn.EjecutarConsulta(query);
+                return JsonConvert.DeserializeObject<RespuestaCRUD>(resp);
+            }
+            catch (Exception ex) 
+            {
+                string error=ex.Message;
+                return new RespuestaCRUD { estado=false, idAfectado=0, mensaje=error };
             }
         }
     }

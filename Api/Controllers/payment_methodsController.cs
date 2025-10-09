@@ -9,9 +9,9 @@ namespace Api.Controllers
     [ApiController]
     public class payment_methodsController : ControllerBase
     {
-        [HttpPost("Lista_payment")]
+        [HttpGet("")]
         [TokenAndDb]
-        public async Task<IActionResult> Lista_payment(DBReques reques)
+        public async Task<IActionResult> Lista_payment()
         {
             var resp = await payment_methodsControl.Lista_payment();
             return Ok(resp);

@@ -9,11 +9,11 @@ namespace Api.Controllers
     [ApiController]
     public class V_VentasPagosInternosController : ControllerBase
     {
-        [HttpPost("ConsultarIdVenta")]
+        [HttpGet("{idventa}")]
         [TokenAndDb]
-        public async Task<IActionResult> ConsultarIdVenta(ConsultarIdVentaRequest reques)
+        public async Task<IActionResult> ConsultarIdVenta(int idventa)
         {
-            var resp = await V_VentasPagosInternosControl.ListaPagos(reques.idventa);
+            var resp = await V_VentasPagosInternosControl.ListaPagos(idventa);
             return Ok(resp);
         }
     }
